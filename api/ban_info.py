@@ -1,17 +1,16 @@
 import json
+import os
 import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-
-API_KEY = "akiru_3K9xgH7sZrLpQt92"
 
 @app.route("/api/ban_info", methods=["GET"])
 def ban_info():
     uid = request.args.get("uid")
     key = request.args.get("key")
 
-    if key != API_KEY:
+    if key != "akiru_3K9xgH7sZrLpQt92":
         return jsonify({"error": "Invalid API key"}), 403
 
     if not uid:
@@ -46,4 +45,6 @@ def ban_info():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    # Lấy giá trị cổng từ biến môi trường PORT
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
